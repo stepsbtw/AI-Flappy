@@ -4,6 +4,8 @@ SCREEN_WIDTH = 300
 SCREEN_HEIGHT = 800
 SCREEN_SCALE = 2
 
+janela = pygame.display.set_mode((SCREEN_HEIGHT, SCREEN_WIDTH))
+
 def main():
 
 
