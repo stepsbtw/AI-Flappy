@@ -1,5 +1,9 @@
 import pygame
 
+SCREEN_WIDTH = 300
+SCREEN_HEIGHT = 800
+SCREEN_SCALE = 2
+
 def main():
 
 
