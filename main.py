@@ -77,6 +77,9 @@ class Bird():
       rect = self.sprite.get_rect(center = center_pos)
       window.blit(self.sprite, rect.topleft)
 
+   def do_all(self,window,):
+      self.draw(self,window)
+      self.movement(self)
        
 class Pipe():
    def __init__(self,x,y,height):
