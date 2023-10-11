@@ -13,8 +13,8 @@ SPRITE_FLOOR = pygame.image.load(os.path.join('sprites', 'base.png'))
 SPRITE_BG = pygame.image.load(os.path.join('sprites', 'bg.png'))
 
 def main():
-	  pygame.init()
-	  IS_RUNNING = True
+   pygame.init()
+   IS_RUNNING = True
    CLOCK = pygame.time.Clock()
    BIRD = Bird()
    while IS_RUNNING:
