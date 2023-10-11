@@ -4,16 +4,16 @@ SCREEN_WIDTH = 300
 SCREEN_HEIGHT = 800
 SCREEN_SCALE = 2
 
-janela = pygame.display.set_mode((SCREEN_HEIGHT, SCREEN_WIDTH))
+window = pygame.display.set_mode((SCREEN_HEIGHT, SCREEN_WIDTH))
 
 def main():
-
-    while run: 
+    is_running = True
+    while is_running:
         clock.tick(60) 
-        janela.fill(white) #colocar o BG aqui
+        window.fill(white) #colocar o BG aqui
         for event in pygame.event.get(): 
             if event.type == pygame.QUIT:
-                run = False 
+                is_running = False 
         pygame.display.update() 
 
     pygame.quit()
