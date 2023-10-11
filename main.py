@@ -13,10 +13,10 @@ SPRITE_FLOOR = pygame.image.load(os.path.join('sprites', 'base.png'))
 SPRITE_BG = pygame.image.load(os.path.join('sprites', 'bg.png'))
 
 def main():
-   IS_RUNNING = True
+	  pygame.init()
+	  IS_RUNNING = True
    CLOCK = pygame.time.Clock()
    BIRD = Bird()
-
    while IS_RUNNING:
       CLOCK.tick(60)
       WINDOW.fill((0,200,200)) #colocar o BG aqui
@@ -28,7 +28,7 @@ def main():
 
    pygame.quit()
 
-class Bird():
+class Bird:
    TEMPO_ANIMACAO = 30
    SPRITES = SPRITES_BIRD
    def __init__(self,x,y):
@@ -84,10 +84,10 @@ class Bird():
       self.draw(self,window)
       #self.move(self)
        
-class Pipe():
+class Pipe:
    def __init__(self,x,y,height):
-       self.height = height
-       self.x = x
-       self.y = y
+      self.height = height
+      self.x = x
+      self.y = y
 
 main()
