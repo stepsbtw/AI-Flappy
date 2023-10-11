@@ -13,13 +13,14 @@ SPRITE_FLOOR = pygame.image.load(os.path.join('sprites', 'base.png'))
 SPRITE_BG = pygame.image.load(os.path.join('sprites', 'bg.png'))
 
 def main():
-   is_running = True
-   while is_running:
-      clock.tick(60)
-      window.fill(white) #colocar o BG aqui
+   IS_RUNNING = True
+   CLOCK = pygame.time.Clock()
+   while IS_RUNNING:
+      CLOCK.tick(60)
+      WINDOW.fill((0,200,200)) #colocar o BG aqui
       for event in pygame.event.get(): 
          if event.type == pygame.QUIT:
-            is_running = False 
+            IS_RUNNING = False 
       pygame.display.update() 
 
    pygame.quit()
@@ -61,3 +62,5 @@ class Pipe():
        self.height = height
        self.x = x
        self.y = y
+
+main()
