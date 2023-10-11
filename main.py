@@ -16,7 +16,7 @@ def main():
    pygame.init()
    IS_RUNNING = True
    CLOCK = pygame.time.Clock()
-   BIRD = Bird()
+   BIRD = Bird(0,0)
    while IS_RUNNING:
       CLOCK.tick(60)
       WINDOW.fill((0,200,200)) #colocar o BG aqui
@@ -48,16 +48,16 @@ class Bird:
       # pega o x e y do ponto
       # diminui do x e y do passaro
       # chama o think
-
-
    def think(self, xdelta, ydelta):
       x
       # pega os deltas e decide o output
 
    def jump(self, output):
-      self.tick = 0
-      self.speed = -2*accel # valor negativo no y, boneco vai pra cima!
-      self.height = self.y
+      x
+      #self.tick = 0
+      #self.speed = -2*accel 
+      # valor negativo no y, boneco vai pra cima!
+      #self.height = self.y
       # pula!
 
    def move(self):
@@ -70,19 +70,27 @@ class Bird:
       self.tick_animation += 1
       if self.tick_animation < self.TEMPO_ANIMACAO:
          self.sprite = self.SPRITES[1]
+      elif self.tick_animation < self.TEMPO_ANIMACAO * 2:
+         self.tick_animation = 0
       else:
          self.sprite = self.SPRITES[0]
 
       if self.speed > 0:
          self.sprite = self.SPRITES[1]
 
-      center_pos = self.sprite.get_rect(topleft=(self.x,self.y)).center
-      rect = self.sprite.get_rect(center = center_pos)
-      window.blit(self.sprite, rect.topleft)
+      #center_pos = self.sprite.get_rect(topleft=(self.x,self.y)).center
+      #rect = self.sprite.get_rect(center = center_pos)
+      window.blit(self.sprite, (self.x,self.y))
 
+   def gravity(self):
+      #self.y += self.speed
+      self.y = min(self.y + self.speed, SCREEN_HEIGHT - self.sprite.get_height())
+      if self.y >= SCREEN_HEIGHT - self.sprite.get_height():
+         self.jump()
    def do_all(self,window,):
-      self.draw(self,window)
-      #self.move(self)
+      self.draw(window)
+      self.gravity
+      #self.move()
        
 class Pipe:
    def __init__(self,x,y,height):
