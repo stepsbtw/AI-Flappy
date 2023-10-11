@@ -8,6 +8,15 @@ janela = pygame.display.set_mode((SCREEN_HEIGHT, SCREEN_WIDTH))
 
 def main():
 
+    while run: 
+        clock.tick(60) 
+        janela.fill(white) #colocar o BG aqui
+        for event in pygame.event.get(): 
+            if event.type == pygame.QUIT:
+                run = False 
+        pygame.display.update() 
+
+    pygame.quit()
 
 class Bird():
    def __init__(self,x,y):
