@@ -15,9 +15,12 @@ SPRITE_BG = pygame.image.load(os.path.join('sprites', 'bg.png'))
 def main():
    IS_RUNNING = True
    CLOCK = pygame.time.Clock()
+   BIRD = Bird()
+
    while IS_RUNNING:
       CLOCK.tick(60)
       WINDOW.fill((0,200,200)) #colocar o BG aqui
+      BIRD.do_all(BIRD,WINDOW)
       for event in pygame.event.get(): 
          if event.type == pygame.QUIT:
             IS_RUNNING = False 
@@ -79,7 +82,7 @@ class Bird():
 
    def do_all(self,window,):
       self.draw(self,window)
-      self.movement(self)
+      #self.move(self)
        
 class Pipe():
    def __init__(self,x,y,height):
