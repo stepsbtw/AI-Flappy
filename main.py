@@ -7,7 +7,7 @@ SCREEN_SCALE = 2
 
 WINDOW = pygame.display.set_mode((SCREEN_HEIGHT, SCREEN_WIDTH))
 
-SPRITES_BIRD = [pygame.image.load(os.path.join('sprites', 'bird1.png')),pygame.image.load(os.path.join('sprites', 'bird3.png'))]
+SPRITES_BIRD = [pygame.image.load(os.path.join('sprites', 'bird2.png')),pygame.image.load(os.path.join('sprites', 'bird1.png'))]
 SPRITE_PIPE = pygame.image.load(os.path.join('sprites', 'pipe.png'))
 SPRITE_FLOOR = pygame.image.load(os.path.join('sprites', 'base.png'))
 SPRITE_BG = pygame.image.load(os.path.join('sprites', 'bg.png'))
@@ -26,14 +26,18 @@ def main():
    pygame.quit()
 
 class Bird():
+   TEMPO_ANIMACAO = 30
+   SPRITES = SPRITES_BIRD
    def __init__(self,x,y):
       self.score = 0
       self.x = x
       self.y = y
-      self.height = y
       self.speed = 0
       self.tick = 0
+      self.tick_animation = 0
+      self.height = y
       self.accel = 1.5
+      self.sprite = self.sprites[0]
       self.weights = [0,0]
    
    def vision(self, xpipe, ypipe):
@@ -48,7 +52,9 @@ class Bird():
       # pega os deltas e decide o output
 
    def jump(self, output):
-      self.speed = -5 # valor negativo no y, boneco vai pra cima!
+      self.tick = 0
+      self.speed = -2*accel # valor negativo no y, boneco vai pra cima!
+      self.height = self.y
       # pula!
 
    def move(self):
@@ -56,6 +62,21 @@ class Bird():
       self.tick+=1
       movement = (self.accel*(self.tick**2))/2 + self.speed
       self.y += movement
+
+   def draw(self,window):
+      self.tick_animation += 1
+      if self.tick_animation < self.TEMPO_ANIMACAO:
+         self.sprite = self.SPRITES[1]
+      else:
+         self.sprite = self.SPRITES[0]
+
+      if self.speed > 0:
+         self.sprite = self.SPRITES[1]
+
+      center_pos = self.sprite.get_rect(topleft=(self.x,self.y)).center
+      rect = self.sprite.get_rect(center = center_pos)
+      window.blit(self.sprite, rect.topleft)
+
        
 class Pipe():
    def __init__(self,x,y,height):
