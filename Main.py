@@ -9,6 +9,7 @@ SCREEN_HEIGHT = 600
 SCREEN_SCALE = 2
 
 WINDOW = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+SPRITE_BG = pygame.image.load(os.path.join('sprites','bg'))
 
 def main():
    pygame.init()
