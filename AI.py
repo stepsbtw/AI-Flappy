@@ -1,4 +1,5 @@
 import pygame
+import random
 
 self.weights = [0, 0] 
 self.score = 0 
@@ -14,5 +15,14 @@ def think(self,deltas):
 
 def distance(deltas):
     return sqrt(delta[0]**2 + delta[1]**2)
+
+def mutation(inputs):
+     for i in range(len(inputs)):
+         weight = random.randrange(0,1000)
+         mutations = [inputs[i] + weight, inputs[i] - weight]
+         neuros[i] = random.choice(list_mutation) 
+  
+     return neuros
+
 
 # falta adicionar o sistema de peso
