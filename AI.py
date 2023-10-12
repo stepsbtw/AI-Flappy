@@ -12,7 +12,7 @@ def think(self,deltas):
     if deltas[0] < deltas[1]:
         self.jump()
 
-def distance(deltaxy):
+def distance(deltas):
     return sqrt(delta[0]**2 + delta[1]**2)
 
 # falta adicionar o sistema de peso
