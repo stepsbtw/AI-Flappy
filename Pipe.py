@@ -2,10 +2,11 @@ import pygame
 import os
 
 class Pipe:
+   SPRITE = pygame.image.load(os.path.join('sprites', 'pipe.png'))
    def __init__(self, x, y):
       self.x = x
       self.y = y
-      self.sprite = pygame.image.load(os.path.join('sprites', 'pipe.png'))
+      self.sprite = SPRITE
       self.sprite_invert = pygame.transform.flip(self.sprite,False,True)
 
    def draw(self,window):
