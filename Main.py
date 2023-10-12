@@ -9,15 +9,22 @@ def main():
    pygame.init()
    IS_RUNNING = True
    CLOCK = pygame.time.Clock()
+
+# CRIANDO LOOP
+
    WINDOW = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
    players = [Bird(Globals.SCREEN_WIDTH/8, (Globals.GAME_HEIGHT/2) - Bird.SPRITE_HEIGHT/2)]
    pipes = [Pipe(Globals.SCREEN_WIDTH+Globals.SCREEN_WIDTH/2)]
    base = Base(Globals.SCREEN_HEIGHT - Base.HEIGHT)
    score = 0 # pra i.a desliga
+
+# GAME LOOP
+
    while IS_RUNNING:
       CLOCK.tick(60)
       WINDOW.fill((255, 255, 255))
-      for event in pygame.event.get():
+
+      for event in pygame.event.get(): # CHECK DE EVENTOS
          if event.type == pygame.QUIT:
             IS_RUNNING = False
          if event.type == pygame.KEYDOWN:
@@ -25,13 +32,16 @@ def main():
                case K_SPACE: 
                   for player in players:
                      player.jump()
-      for i,player in enumerate(players):
+
+      for i,player in enumerate(players): # ENUMERAR E PEGAR O INDEX
          player.move()
          if player.DEAD:
             players.pop(i)
       base.move()
       add_pipe = False
       remove_pipes = []
+
+# CRIACAO E REMOÇÃO DO LOOP DE CANOS.
 
       for pipe in pipes:
          pipe.move()
@@ -56,6 +66,8 @@ def main():
       pygame.display.update()
 
    pygame.quit()
+
+# FUNCAO PRA IMPRIMIR NA TELA
 
 def draw_all(window,birds,pipes,base,score):
    window.blit(Globals.SPRITE_BG,(0,0))
