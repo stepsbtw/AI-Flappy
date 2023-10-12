@@ -5,7 +5,7 @@ import Globals
 class Base:
     SPRITE = pygame.transform.scale(pygame.image.load(os.path.join('sprites','base.png')),(Globals.SCREEN_WIDTH,Globals.SCREEN_HEIGHT/8))
     SPRITE_INVERTED = pygame.transform.flip(SPRITE,False,True)
-    SPEED = Globals.SCREEN_WIDTH/100
+    SPEED = Globals.SCREEN_WIDTH/85
     WIDTH = SPRITE.get_width()
     HEIGHT = SPRITE.get_height()
 

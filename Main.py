@@ -11,9 +11,9 @@ def main():
    CLOCK = pygame.time.Clock()
    WINDOW = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
    players = [Bird(Globals.SCREEN_WIDTH/8, (Globals.GAME_HEIGHT/2) - Bird.SPRITE_HEIGHT/2)]
-   pipes = [Pipe(Globals.SCREEN_WIDTH)]
+   pipes = [Pipe(Globals.SCREEN_WIDTH+Globals.SCREEN_WIDTH/2)]
    base = Base(Globals.SCREEN_HEIGHT - Base.HEIGHT)
-   score = 0
+   score = 0 # pra i.a desliga
    while IS_RUNNING:
       CLOCK.tick(60)
       WINDOW.fill((255, 255, 255))
@@ -37,7 +37,7 @@ def main():
          pipe.move()
          for i, player in enumerate(players): # pega o index de cada passaro em passaros.
             if pipe.collision(player):
-               player.pop(i) # MATEI O PASSARO.
+               players.pop(i) # MATEI O PASSARO.
             if not pipe.score:
                if player.x > pipe.x: # se o passaro passou do cano cria um novo.
                   pipe.score = True
@@ -47,7 +47,7 @@ def main():
 
       if add_pipe:
          score +=1
-         pipes.append(Pipe(Globals.SCREEN_WIDTH+Globals.SCREEN_WIDTH/6))
+         pipes.append(Pipe(Globals.SCREEN_WIDTH))
 
       for pipe in remove_pipes:
          remove_pipes.remove(pipe)
