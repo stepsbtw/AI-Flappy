@@ -1,3 +1,6 @@
+import pygame
+import os
+
 class Bird:
    TIME_ANIMATION = 30
    SPRITES = [pygame.image.load(os.path.join('sprites', 'bird2.png')),
@@ -11,7 +14,7 @@ class Bird:
       self.tick_animation=0
       #self.height = y
       self.accel = 20.5  # constante pra o movimento/gravidade
-      self.sprite = SPRITES[0]
+      self.sprite = self.SPRITES[0]
 
       #self.weights = [0, 0]
 
@@ -31,12 +34,12 @@ class Bird:
    def move(self):
       # PARABOLA!
       self.tick += 1
-      self.y = min((self.y + (self.tick**2)/2000 ),SCREEN_HEIGHT - self.sprite.get_height())
+      self.y = min((self.y + (self.tick**2)/2000 ), pygame.display.get_window_size()[1] - self.sprite.get_height())
      
       #if self.tick < 0:
          #self.y = self.y-self.speed-(self.tick**2)/100#max((self.y - self.speed -(self.tick**2)/2000),SCREEN_HEIGHT - self.sprite.get_height())
      
-      if self.y >= SCREEN_HEIGHT - self.sprite.get_height():
+      if self.y >= pygame.display.get_window_size()[1] - self.sprite.get_height():
          # caso ele chegue no fim da tela , ele pula! (debug)
             self.jump()
 
