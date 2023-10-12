@@ -20,9 +20,9 @@ def mutation(inputs):
      for i in range(len(inputs)):
          weight = random.randrange(0,1000)
          mutations = [inputs[i] + weight, inputs[i] - weight]
-         neuros[i] = random.choice(list_mutation) 
+         inputs[i] = random.choice(list_mutation) 
   
-     return neuros
+     return inputs
 
 
 # falta adicionar o sistema de peso
