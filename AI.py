@@ -1,8 +1,6 @@
 import pygame
 import random
 
-def eyes(self, deltas):
-    best_distance = 
 
 def brain(self, foods):
     receptors = self.eyes()
