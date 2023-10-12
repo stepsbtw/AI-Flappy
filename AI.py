@@ -3,10 +3,7 @@ import random
 
 
 def brain(self, foods):
-    receptors = self.eyes()
-    if receptors == None:
-        return
-
+    receptors = self.inputs(weights)
     outputs = [0, 0]
 
     outputs[0] = (receptors[1] * self.inputs[0]) + (receptors[0] * self.inputs[2])
