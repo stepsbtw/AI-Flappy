@@ -2,21 +2,13 @@ import pygame
 import os
 import Bird
 import Pipe
+import Floor
 
 SCREEN_WIDTH = 350
 SCREEN_HEIGHT = 600
 SCREEN_SCALE = 2
 
 WINDOW = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-SPRITES_BIRD = [
-   pygame.image.load(os.path.join('sprites', 'bird2.png')),
-   pygame.image.load(os.path.join('sprites', 'bird1.png'))
-]
-SPRITE_PIPE = pygame.image.load(os.path.join('sprites', 'pipe.png'))
-SPRITE_FLOOR = pygame.image.load(os.path.join('sprites', 'base.png'))
-SPRITE_BG = pygame.image.load(os.path.join('sprites', 'bg.png'))
-
 
 def main():
    pygame.init()
