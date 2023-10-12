@@ -1,5 +1,7 @@
 import pygame
 import os
+from Bird import Bird
+from Pipe import Pipe
 
 SCREEN_WIDTH = 350
 SCREEN_HEIGHT = 600
@@ -38,88 +40,5 @@ def main():
       pygame.display.update()
 
    pygame.quit()
-
-
-class Bird:
-   TEMPO_ANIMACAO = 30
-   SPRITES = SPRITES_BIRD
-
-   def __init__(self,x,y):
-      self.score = 0
-      self.x = x
-      self.y = y
-      self.speed = 1
-      self.tick= 0
-      self.tick_animation=0
-      self.height = y
-      self.accel = 20.5
-      self.sprite = self.SPRITES[0]
-      self.weights = [0, 0]
-
-   #def vision(self, xpipe, ypipe):
-
-   # pega o x e y do ponto
-   # diminui do x e y do passaro
-   # chama o think
-
-   #def think(self, xdelta, ydelta):
-
-   # pega os deltas e decide o output
-
-   def jump(self):
-      self.tick = 0
-      self.y -= self.accel
-      # valor negativo no y, boneco vai pra cima!
-      # pula!
-
-   def move(self):
-      # SORVETAO, PARABOLA! S = So + Vo + at^2/2
-      self.tick += 1
-      self.y = min((self.y + (self.tick**2)/2000 ),SCREEN_HEIGHT - self.sprite.get_height())
-      #if self.tick < 0:
-         #self.y = self.y-self.speed-(self.tick**2)/100#max((self.y - self.speed -(self.tick**2)/2000),SCREEN_HEIGHT - self.sprite.get_height())
-      if self.y >= SCREEN_HEIGHT - self.sprite.get_height():
-         #pula!
-            self.jump()
-
-   def draw(self, window):
-      self.tick_animation += 1
-      if self.tick_animation < self.TEMPO_ANIMACAO:
-         self.sprite = self.SPRITES[1]
-      elif self.tick_animation >= self.TEMPO_ANIMACAO * 2:
-         self.tick_animation = 0
-      else:
-         self.sprite = self.SPRITES[0]
-
-      if self.speed > 0:
-         self.sprite = self.SPRITES[1]
-
-      #center_pos = self.sprite.get_rect(topleft=(self.x, self.y)).center
-      #rect = self.sprite.get_rect(center=center_pos)
-      window.blit(self.sprite,(self.x,self.y))
-
-   #def gravity(self):
-      #self.tick -= 1
-      #self.y = min((self.y + self.speed), SCREEN_HEIGHT-self.sprite.get_height())
-
-   def do_all(
-      self,
-      window,
-   ):
-      self.draw(window)
-      self.move()
-      #self.gravity()
-
-
-class Pipe:
-   def __init__(self, x, y):
-      self.x = x
-      self.y = y
-      self.sprite = SPRITE_PIPE
-
-   def draw(self,window):
-      window.blit(self.sprite,(self.x,self.y))
-      #window.blit(self.sprite,(self.x,self.y))
-#printar flipado
-
+   
 main()
