@@ -1,6 +1,7 @@
 class Bird:
    TIME_ANIMATION = 30
-   SPRITES = SPRITES_BIRD
+   SPRITES = [pygame.image.load(os.path.join('sprites', 'bird2.png')),
+              pygame.image.load(os.path.join('sprites', 'bird1.png'))]
    def __init__(self,x,y):
       #self.score = 0
       self.x = x
@@ -10,7 +11,8 @@ class Bird:
       self.tick_animation=0
       #self.height = y
       self.accel = 20.5  # constante pra o movimento/gravidade
-      self.sprite = self.SPRITES[0]
+      self.sprite = SPRITES[0]
+
       #self.weights = [0, 0]
 
    #def vision(self, xpipe, ypipe):
