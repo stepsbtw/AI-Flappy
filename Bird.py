@@ -9,17 +9,16 @@ class Bird:
    SPRITE_WIDTH = SPRITES[0].get_width()
    SPRITE_HEIGHT = SPRITES[0].get_height()
    def __init__(self,x,y):
-      #self.score = 0
       self.x = x
       self.y = y
       self.speed = 1
       self.tick= 0
       self.tick_animation=0
-      #self.height = y
       self.accel = 20.5  # constante pra o movimento/gravidade
       self.sprite = self.SPRITES[0]
-
+      #self.height = y
       #self.weights = [0, 0]
+      #self.score = 0
 
    #def vision(self, xpipe, ypipe):
    # pega o x e y do ponto
@@ -38,13 +37,6 @@ class Bird:
       # PARABOLA!
       self.tick += 1
       self.y = min((self.y + (self.tick**2)/2000 ), Globals.GAME_HEIGHT - self.SPRITE_HEIGHT)
-     
-      #if self.tick < 0:
-         #self.y = self.y-self.speed-(self.tick**2)/100#max((self.y - self.speed -(self.tick**2)/2000),SCREEN_HEIGHT - self.SPRITE_HEIGHT)
-     
-      if self.y >= Globals.GAME_HEIGHT - self.SPRITE_HEIGHT:
-         # caso ele chegue no fim da tela , ele pula! (debug)
-            self.jump()
 
    def draw(self, window):
       self.tick_animation += 1
@@ -68,7 +60,5 @@ class Bird:
       #self.y = min((self.y + self.speed), SCREEN_HEIGHT-self.SPRITE_HEIGHT)
 
    def do_all(self,window):
-      # aqui vou printar e mover o personagem.
       self.draw(window)
       self.move()
-      #self.gravity()

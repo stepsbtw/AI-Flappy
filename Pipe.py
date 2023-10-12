@@ -13,6 +13,5 @@ class Pipe:
    def draw(self,window):
       window.blit(self.sprite,(self.x,self.y))
       window.blit(self.sprite_invert,(self.x,self.y))
-      #window.blit(self.sprite,(self.x,self.y))
 
 #printar o inverso, um cano sempre tem o seu cano reverso.
