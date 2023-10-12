@@ -1,5 +1,6 @@
 import pygame
 import os
+import Globals
 
 class Pipe:
    SPRITE = pygame.image.load(os.path.join('sprites', 'pipe.png'))
