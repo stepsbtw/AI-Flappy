@@ -1,7 +1,7 @@
 import pygame
 import os
-from Bird import Bird
-from Pipe import Pipe
+import Bird
+import Pipe
 
 SCREEN_WIDTH = 350
 SCREEN_HEIGHT = 600
