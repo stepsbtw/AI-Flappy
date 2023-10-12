@@ -14,7 +14,7 @@ def think(self,deltas):
         self.jump()
 
 def distance(deltas):
-    return sqrt(delta[0]**2 + delta[1]**2)
+    return sqrt(deltas[0]**2 + deltas[1]**2)
 
 def mutation(inputs):
      for i in range(len(inputs)):
