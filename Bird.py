@@ -6,6 +6,8 @@ class Bird:
    TIME_ANIMATION = 30
    SPRITES = [pygame.image.load(os.path.join('sprites', 'bird2.png')),
               pygame.image.load(os.path.join('sprites', 'bird1.png'))]
+   SPRITE_WIDTH = SPRITES[0].get_width()
+   SPRITE_HEIGHT = SPRITES[0].get_height()
    def __init__(self,x,y):
       #self.score = 0
       self.x = x
@@ -35,12 +37,12 @@ class Bird:
    def move(self):
       # PARABOLA!
       self.tick += 1
-      self.y = min((self.y + (self.tick**2)/2000 ), SCREEN_HEIGHT - self.sprite.get_height())
+      self.y = min((self.y + (self.tick**2)/2000 ), Globals.GAME_HEIGHT - self.SPRITE_HEIGHT)
      
       #if self.tick < 0:
-         #self.y = self.y-self.speed-(self.tick**2)/100#max((self.y - self.speed -(self.tick**2)/2000),SCREEN_HEIGHT - self.sprite.get_height())
+         #self.y = self.y-self.speed-(self.tick**2)/100#max((self.y - self.speed -(self.tick**2)/2000),SCREEN_HEIGHT - self.SPRITE_HEIGHT)
      
-      if self.y >= SCREEN_HEIGHT - self.sprite.get_height():
+      if self.y >= Globals.GAME_HEIGHT - self.SPRITE_HEIGHT:
          # caso ele chegue no fim da tela , ele pula! (debug)
             self.jump()
 
@@ -63,7 +65,7 @@ class Bird:
    #def gravity(self):
       #self.tick -= 1
       # seria interessante diminuir o tick, pq na funcao 'move', o movimento eh baseado no tick do personagem.
-      #self.y = min((self.y + self.speed), SCREEN_HEIGHT-self.sprite.get_height())
+      #self.y = min((self.y + self.speed), SCREEN_HEIGHT-self.SPRITE_HEIGHT)
 
    def do_all(self,window):
       # aqui vou printar e mover o personagem.

@@ -1,27 +1,25 @@
 import pygame
 import os
+import Globals
 from Bird import Bird
 from Pipe import Pipe
-import Globals
 #import Floor
-
-SCREEN_WIDTH = 300
-SCREEN_HEIGHT = 600
-#SCREEN_SCALE = 2
 
 def main():
    pygame.init()
    IS_RUNNING = True
    CLOCK = pygame.time.Clock()
-   WINDOW = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-   SPRITE_BG = pygame.transform.scale(pygame.image.load(os.path.join('sprites','bg.png')),(300,600))
-   BIRD = Bird(150, 300) 
-   PIPES = [Pipe(100,SCREEN_HEIGHT),Pipe(100,0),Pipe(150,SCREEN_HEIGHT-100),Pipe(150,100)]
+   WINDOW = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
+   BIRD = Bird((Globals.SCREEN_WIDTH/2) - Bird.SPRITE_WIDTH/2, (Globals.GAME_HEIGHT/2) - Bird.SPRITE_HEIGHT/2)
+   PIPES = [Pipe(0,0)]
    # tentei gerar pra cada pipe um inverso.
+   # criei o passaro centralizado.
    while IS_RUNNING:  
       CLOCK.tick(60)
       WINDOW.fill((255, 255, 255))
-      WINDOW.blit(SPRITE_BG,(0,0))#colocar o BG aqui
+      WINDOW.blit(Globals.SPRITE_BG,(0,0))#colocar o BG aqui
+      WINDOW.blit(Globals.SPRITE_BASE_INVERTED,(0,0))
+      WINDOW.blit(Globals.SPRITE_BASE,(0,Globals.GAME_HEIGHT))
       BIRD.do_all(WINDOW)
       #PIPES[0].draw(WINDOW)
       #PIPES[1].draw(WINDOW)

@@ -7,7 +7,7 @@ class Pipe:
    def __init__(self, x, y):
       self.x = x
       self.y = y
-      self.sprite = SPRITE
+      self.sprite = self.SPRITE
       self.sprite_invert = pygame.transform.flip(self.sprite,False,True)
 
    def draw(self,window):
