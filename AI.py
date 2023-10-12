@@ -1,8 +1,12 @@
 import pygame
 import random
 
-self.weights = [0, 0] 
+if not have_brain:
+    self.weights = [random.randInt(-100,100),random.randInt(-100,100),random.randInt(-100,100),random.randInt(-100,100)] 
 self.score = 0 
+    have_brain = True
+else:
+    self.weights = weights
 
 def vision(self, pipe): 
     deltax = self.x - pipe.x
