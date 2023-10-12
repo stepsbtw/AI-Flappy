@@ -1,6 +1,7 @@
 import pygame
 import os
 import Globals
+import Base
 
 class Bird:
    TIME_ANIMATION = 30
@@ -9,14 +10,14 @@ class Bird:
    SPRITE_WIDTH = SPRITES[0].get_width()
    SPRITE_HEIGHT = SPRITES[0].get_height()
    def __init__(self,x,y):
+      self.DEAD = False
       self.x = x
       self.y = y
-      self.speed = 1
-      self.tick= 0
+      self.tick_jump = 0
+      self.tick_fall = 0
       self.tick_animation=0
-      self.accel = 20.5  # constante pra o movimento/gravidade
+      self.is_jumping = False
       self.sprite = self.SPRITES[0]
-      #self.height = y
       #self.weights = [0, 0]
       #self.score = 0
 
@@ -29,14 +30,24 @@ class Bird:
    # pega os deltas e decide o output
 
    def jump(self):
-      self.tick = 0
-      self.y -= self.accel # valor negativo no y, boneco vai pra cima!
+      self.is_jumping = True
+      self.tick_fall = 0
       # nao ta nada suave.
 
    def move(self):
-      # PARABOLA!
-      self.tick += 1
-      self.y = min((self.y + (self.tick**2)/2000 ), Globals.GAME_HEIGHT - self.SPRITE_HEIGHT)
+      if self.is_jumping:
+         if self.tick_jump >= 5:
+            self.is_jumping = False
+         self.tick_jump += 1
+         self.y -= (self.tick_jump**2)/(Globals.GAME_HEIGHT/160)
+         if self.y < Globals.SCREEN_HEIGHT - Globals.GAME_HEIGHT:
+            self.DEAD = True
+      else:
+         self.tick_jump = 0
+         self.tick_fall +=1
+         self.y += (self.tick_fall**2)/2000
+         if self.y < Globals.GAME_HEIGHT - self.SPRITE_HEIGHT:
+            self.DEAD = True
 
    def draw(self, window):
       self.tick_animation += 1
@@ -47,18 +58,13 @@ class Bird:
       else:
          self.sprite = self.SPRITES[0]
 
-      if self.speed > 0:
+      if self.is_jumping:
          self.sprite = self.SPRITES[1]
 
       #center_pos = self.sprite.get_rect(topleft=(self.x, self.y)).center
       #rect = self.sprite.get_rect(center=center_pos)
       window.blit(self.sprite,(self.x,self.y)) #imprime o boneco na tela
 
-   #def gravity(self):
-      #self.tick -= 1
-      # seria interessante diminuir o tick, pq na funcao 'move', o movimento eh baseado no tick do personagem.
-      #self.y = min((self.y + self.speed), SCREEN_HEIGHT-self.SPRITE_HEIGHT)
+   def get_mask(self):
+      return pygame.mask.from_surface(self.sprite)
 
-   def do_all(self,window):
-      self.draw(window)
-      self.move()

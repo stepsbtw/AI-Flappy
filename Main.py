@@ -3,38 +3,69 @@ import os
 import Globals
 from Bird import Bird
 from Pipe import Pipe
-#import Floor
+from Base import Base
 
 def main():
    pygame.init()
    IS_RUNNING = True
    CLOCK = pygame.time.Clock()
    WINDOW = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
-   Player = Bird((Globals.SCREEN_WIDTH/2) - Bird.SPRITE_WIDTH/2, (Globals.GAME_HEIGHT/2) - Bird.SPRITE_HEIGHT/2)
-   PIPES = [Pipe(0,0)]
-   # tentei gerar pra cada pipe um inverso.
-   # criei o passaro centralizado.
-   while IS_RUNNING:  
+   players = [Bird(Globals.SCREEN_WIDTH/8, (Globals.GAME_HEIGHT/2) - Bird.SPRITE_HEIGHT/2)]
+   pipes = [Pipe(Globals.SCREEN_WIDTH)]
+   base = Base(Globals.SCREEN_HEIGHT - Base.HEIGHT)
+   score = 0
+   while IS_RUNNING:
       CLOCK.tick(60)
       WINDOW.fill((255, 255, 255))
-      WINDOW.blit(Globals.SPRITE_BG,(0,0))
-      WINDOW.blit(Globals.SPRITE_BASE_INVERTED,(0,0)) # bordinha.
-      WINDOW.blit(Globals.SPRITE_BASE,(0,Globals.GAME_HEIGHT))
-      Player.do_all(WINDOW)
-      #PIPES[0].draw(WINDOW)
-      #PIPES[1].draw(WINDOW)
-      #PIPES[2].draw(WINDOW)
-      #PIPES[3].draw(WINDOW)
       for event in pygame.event.get():
          if event.type == pygame.QUIT:
             IS_RUNNING = False
          if event.type == pygame.KEYDOWN:
             match event.key:
                case K_SPACE: 
-                  Player.jump()
+                  for player in players:
+                     player.jump()
+      for i,player in enumerate(players):
+         player.move()
+         if player.DEAD:
+            players.pop(i)
+      base.move()
+      add_pipe = False
+      remove_pipes = []
 
+      for pipe in pipes:
+         pipe.move()
+         for i, player in enumerate(players): # pega o index de cada passaro em passaros.
+            if pipe.collision(player):
+               player.pop(i) # MATEI O PASSARO.
+            if not pipe.score:
+               if player.x > pipe.x: # se o passaro passou do cano cria um novo.
+                  pipe.score = True
+                  add_pipe = True
+         if pipe.x + pipe.sprite_width < 0:
+            remove_pipes.append(pipe)
+
+      if add_pipe:
+         score +=1
+         pipes.append(Pipe(Globals.SCREEN_WIDTH+Globals.SCREEN_WIDTH/6))
+
+      for pipe in remove_pipes:
+         remove_pipes.remove(pipe)
+
+      draw_all(WINDOW,players,pipes,base,score)
       pygame.display.update()
 
    pygame.quit()
+
+def draw_all(window,birds,pipes,base,score):
+   window.blit(Globals.SPRITE_BG,(0,0))
+   for pipe in pipes:
+      pipe.draw(window)
+   base.draw(window)
+   for bird in birds:
+      bird.draw(window)
+   score_text = Globals.SCORE_FONT.render(f'score: {score}',0,(255,255,255))
+   window.blit(score_text,(Globals.SCREEN_WIDTH - Globals.SCREEN_WIDTH/10 - score_text.get_width(),Globals.GAME_HEIGHT - Globals.GAME_HEIGHT/10))
+
 
 main()

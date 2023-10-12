@@ -1,17 +1,50 @@
 import pygame
 import os
 import Globals
+import Base
+import random
 
 class Pipe:
+   DISTANCE = Globals.SCREEN_WIDTH/2.5 # entre canos!
+   SPEED = Globals.SCREEN_WIDTH/100
    SPRITE = pygame.image.load(os.path.join('sprites', 'pipe.png'))
-   def __init__(self, x, y):
+   def __init__(self, x):
       self.x = x
-      self.y = y
-      self.sprite = self.SPRITE
-      self.sprite_invert = pygame.transform.flip(self.sprite,False,True)
+      self.y = 0
+      self.y_invert = 0
+      self.height = 0
+      self.sprite_invert = self.SPRITE
+      self.sprite = pygame.transform.flip(self.sprite_invert,False,True)
+      self.sprite_height = self.SPRITE.get_height()
+      self.sprite_width = self.SPRITE.get_width()
+      self.score = False
+      self.rand_height()
+
+   def rand_height(self):
+      self.height = random.randrange(Globals.GAME_HEIGHT/10, Globals.GAME_HEIGHT - Globals.GAME_HEIGHT/10)
+      self.y = self.height - self.sprite_height
+      self.y_invert = self.height + self.DISTANCE
+
+   def move(self):
+      self.x -= self.SPEED
 
    def draw(self,window):
       window.blit(self.sprite,(self.x,self.y))
-      window.blit(self.sprite_invert,(self.x,self.y))
+      window.blit(self.sprite_invert,(self.x,self.y_invert))
+
+   def collision(self,player):
+      player_mask = player.get_mask()
+      pipe_mask = pygame.mask.from_surface(self.sprite)
+      invert_mask = pygame.mask.from_surface(self.sprite_invert)
+
+      player_distance = (self.x - player.x,self.y - player.y)
+      player_distance_invert = (self.x - player.x, self.y_invert - player.y)
+
+      collision = player_mask.overlap(pipe_mask,player_distance)
+      collision_invert = player_mask.overlap(invert_mask,player_distance_invert)
+
+      if collision or collision_invert:
+         return True
+      return False
 
 #printar o inverso, um cano sempre tem o seu cano reverso.
