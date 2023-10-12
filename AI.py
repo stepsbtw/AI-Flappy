@@ -18,7 +18,7 @@ def distance(deltas):
 
 def mutation(inputs):
      for i in range(len(inputs)):
-         weight = random.randrange(0,1000)
+         weight = random.randrange(0,100)
          mutations = [inputs[i] + weight, inputs[i] - weight]
          inputs[i] = random.choice(list_mutation) 
   
