@@ -1,7 +1,7 @@
 import pygame
 import os
+import random
 import Globals
-import Base
 
 class Bird:
    TIME_ANIMATION = 30
@@ -9,34 +9,50 @@ class Bird:
               pygame.image.load(os.path.join('sprites', 'bird1.png'))]
    SPRITE_WIDTH = SPRITES[0].get_width()
    SPRITE_HEIGHT = SPRITES[0].get_height()
-   def __init__(self,x,y):
+   def __init__(self,weights):
       self.DEAD = False
-      self.x = x
-      self.y = y
+      self.x = Globals.SCREEN_WIDTH/8
+      self.y = (Globals.GAME_HEIGHT/2) - (Bird.SPRITE_HEIGHT/2)
       self.tick_jump = 0
       self.tick_fall = 0
       self.tick_animation=0
       self.is_jumping = False
       self.sprite = self.SPRITES[0]
-      #self.weights = [0, 0]
-      #self.score = 0
 
-   #def vision(self, xpipe, ypipe):
-   # pega o x e y do ponto
-   # diminui do x e y do passaro
-   # chama o think
+      self.weights = []
+      self.ia_score = 0
+      if not weights:
+         self.weights = [random.randint(-1000,1000),
+                        random.randint(-1000,1000),
+                        random.randint(-1000,1000),
+                        random.randint(-1000,1000)] 
+      else:
+         self.weights = weights
+      
+   def vision(self, pipe): 
+      deltax = pipe.x - self.x
+      deltay = (pipe.y + pipe.y_invert)/2 - self.y
+      return (deltax, deltay)
 
-   #def think(self, xdelta, ydelta):
-   # pega os deltas e decide o output
+   def brain(self, pipe):
+      inputs = self.vision(pipe)
+      outputs = [0, 0]
+
+      outputs[0] = (inputs[0] * self.weights[0]) + (inputs[1] * self.weights[1])
+      outputs[1] = (inputs[0] * self.weights[2]) + (inputs[1] * self.weights[3])
+      if outputs[0] > outputs[1]: # alguma funcao qualquer que determine o output.
+         self.jump()
+      else:
+         self.move()
+      
 
    def jump(self):
       self.is_jumping = True
-      self.tick_fall = 2
-      # nao ta nada suave.
+      self.tick_fall = 2 # comecar ja com um valor pra parabola ser mais rapida
 
    def move(self):
       if self.is_jumping:
-         if self.tick_jump >= 5:
+         if self.tick_jump >= 5: # 5 frames de pulo
             self.is_jumping = False
          self.tick_jump += 1
          self.y -= (self.tick_jump**2)/(Globals.GAME_HEIGHT/160)
@@ -61,10 +77,10 @@ class Bird:
       if self.is_jumping:
          self.sprite = self.SPRITES[1]
 
-      #center_pos = self.sprite.get_rect(topleft=(self.x, self.y)).center
-      #rect = self.sprite.get_rect(center=center_pos)
       window.blit(self.sprite,(self.x,self.y)) #imprime o boneco na tela
 
    def get_mask(self):
       return pygame.mask.from_surface(self.sprite)
+
+   
 

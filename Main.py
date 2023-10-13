@@ -1,82 +1,88 @@
 import pygame
 import os
 import Globals
-from Bird import Bird
 from Pipe import Pipe
 from Base import Base
+from Evolution import Evolution
+from Bird import Bird
+
 
 def main():
    pygame.init()
-   IS_RUNNING = True
-   CLOCK = pygame.time.Clock()
-
-# CRIANDO LOOP
-
-   WINDOW = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
-   players = [Bird(Globals.SCREEN_WIDTH/8, (Globals.GAME_HEIGHT/2) - Bird.SPRITE_HEIGHT/2)]
-   pipes = [Pipe(Globals.SCREEN_WIDTH+Globals.SCREEN_WIDTH/2)]
+   is_running = True
+   clock = pygame.time.Clock()
+   window = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
+   pipes = [Pipe(Globals.SCREEN_WIDTH)]
    base = Base(Globals.SCREEN_HEIGHT - Base.HEIGHT)
-   score = 0 # pra i.a desliga
-
-# GAME LOOP
-
-   while IS_RUNNING:
-      CLOCK.tick(60)
-      WINDOW.fill((255, 255, 255))
-
-      for event in pygame.event.get(): # CHECK DE EVENTOS
+   players = []
+   dead_players = []
+   DARWIN = Evolution()
+   CURRENT_GENERATION = 0
+   CURRENT_PIPE = pipes[0]
+   MVP_SCORE = 0
+   while is_running:
+      clock.tick(60)
+      window.fill((255, 255, 255))
+      for event in pygame.event.get():
          if event.type == pygame.QUIT:
-            IS_RUNNING = False
-         if event.type == pygame.KEYDOWN:
-            match event.key:
-               case K_SPACE: 
-                  for player in players:
-                     player.jump()
-
-      for i,player in enumerate(players): # ENUMERAR E PEGAR O INDEX
-         player.move()
-         if player.DEAD:
-            players.pop(i)
+            is_running = False
+         #if event.type == pygame.KEYDOWN:
+            #match event.key:
+               #case K_SPACE: 
+                  #for player in players:
+                     #player.jump()
+      if(not players):
+         MVP_SCORE = 0
+         pipes = [Pipe(Globals.SCREEN_WIDTH)]
+         DARWIN.new_gen(players,dead_players,CURRENT_GENERATION)
+      for i,player in enumerate(players):
+            if player.DEAD:
+               dead_players.append(player)
+               players.pop(i)
+            player.brain(CURRENT_PIPE)
       base.move()
-      add_pipe = False
-      remove_pipes = []
-
-# CRIACAO E REMOÇÃO DO LOOP DE CANOS.
-
-      for pipe in pipes:
-         pipe.move()
-         for i, player in enumerate(players): # pega o index de cada passaro em passaros.
-            if pipe.collision(player):
-               players.pop(i) # MATEI O PASSARO.
-            if not pipe.score:
-               if player.x > pipe.x: # se o passaro passou do cano cria um novo.
-                  pipe.score = True
-                  add_pipe = True
-         if pipe.x + pipe.sprite_width < 0:
-            remove_pipes.append(pipe)
-
-      if add_pipe:
-         score +=1
-         pipes.append(Pipe(Globals.SCREEN_WIDTH))
-
-      for pipe in remove_pipes:
-         remove_pipes.remove(pipe)
-
-      draw_all(WINDOW,players,pipes,base,score)
+      if(check_score(pipes,players,dead_players)):
+         MVP_SCORE+=1
+         CURRENT_PIPE = pipes[MVP_SCORE]
+      draw_all(window,players,pipes,base,MVP_SCORE,CURRENT_GENERATION)
       pygame.display.update()
 
    pygame.quit()
 
-# FUNCAO PRA IMPRIMIR NA TELA
 
-def draw_all(window,birds,pipes,base,score):
+def check_score(pipes,players,dead_players): # a cada cano que some da tela, um novo é gerado.
+   add_pipe = False
+   remove_pipes = []
+   for pipe in pipes:
+      pipe.move()
+      for i, player in enumerate(players): # pega o index e o elemento referido
+         if pipe.collision(player):
+            player.DEAD = True
+            dead_players.append(player)
+            players.pop(i)
+         if not pipe.score and player.x > pipe.x: # caso ainda nao tenha sido feito ponto e o jogador passou, ponto!
+            pipe.score = True
+            add_pipe = True # se foi ponto, adicionar um cano
+            player.ia_score +=1
+      if pipe.x + pipe.sprite_width < 0: # se o pipe saiu, entra na fila de remocao.
+         remove_pipes.append(pipe)
+   if add_pipe: 
+      pipes.append(Pipe(Globals.SCREEN_WIDTH)) # apenas adicionar o novo cano fora do loop.
+   for pipe in remove_pipes: # remover os que ja sairam da tela.
+      remove_pipes.remove(pipe)
+   return add_pipe # se adicionei um pipe, prox pipe.
+      
+
+def draw_all(window,birds,pipes,base,mvp_score,generation):
    window.blit(Globals.SPRITE_BG,(0,0))
    for pipe in pipes:
       pipe.draw(window)
    base.draw(window)
    for bird in birds:
       bird.draw(window)
-   score_text = Globals.SCORE_FONT.render(f'score: {score}',0,(255,255,255))
+   generation_number = Globals.SCORE_FONT.render(f'generation: {generation}',0,(0,0,0))
+   score_text = Globals.SCORE_FONT.render(f'score: {mvp_score}',0,(255,255,255))
+   window.blit(generation_number,(Globals.SCREEN_WIDTH - Globals.SCREEN_WIDTH/10 - generation_number.get_width(),Globals.GAME_HEIGHT - Globals.GAME_HEIGHT/10 + score_text.get_height()+10))
    window.blit(score_text,(Globals.SCREEN_WIDTH - Globals.SCREEN_WIDTH/10 - score_text.get_width(),Globals.GAME_HEIGHT - Globals.GAME_HEIGHT/10))
 
 
