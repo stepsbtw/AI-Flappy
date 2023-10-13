@@ -44,7 +44,7 @@ def main():
 
    pygame.quit()
 
-
+# ta faltando um pipe.pop
 def check_score(pipes,players,dead_players): # a cada cano que some da tela, um novo é gerado.
    add_pipe = False # isso tbm ta dando merda. add_pipe = score
    remove_pipes = []
@@ -61,8 +61,8 @@ def check_score(pipes,players,dead_players): # a cada cano que some da tela, um 
             player.ia_score +=1
       if pipe.x + pipe.sprite_width < 0: # se o pipe saiu, entra na fila de remocao.
          remove_pipes.append(pipe)
-   if add_pipe: 
-      pipes.append(Pipe(Globals.SCREEN_WIDTH)) # apenas adicionar o novo cano fora do loop.
+   if add_pipe:
+      pipes.append(Pipe()) # apenas adicionar o novo cano fora do loop.
    for pipe in remove_pipes: # remover os que ja sairam da tela.
       remove_pipes.remove(pipe)
    return add_pipe # se adicionei um pipe, prox pipe.
