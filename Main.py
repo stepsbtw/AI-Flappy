@@ -12,29 +12,24 @@ def main():
    is_running = True
    clock = pygame.time.Clock()
    window = pygame.display.set_mode((Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT))
-   pipes = [Pipe(Globals.SCREEN_WIDTH)]
-   base = Base(Globals.SCREEN_HEIGHT - Base.HEIGHT)
+   pipes = [Pipe()]
+   base = Base()
    players = []
    dead_players = []
-   DARWIN = Evolution()
-   CURRENT_GENERATION = 0
+   DARWIN = Evolution(0)
    CURRENT_PIPE = pipes[0]
    MVP_SCORE = 0
    while is_running:
       clock.tick(60)
       window.fill((255, 255, 255))
+      CURRENT_GENERATION = DARWIN.generation
       for event in pygame.event.get():
          if event.type == pygame.QUIT:
             is_running = False
-         #if event.type == pygame.KEYDOWN:
-            #match event.key:
-               #case K_SPACE: 
-                  #for player in players:
-                     #player.jump()
       if(not players):
          MVP_SCORE = 0
-         pipes = [Pipe(Globals.SCREEN_WIDTH)]
-         DARWIN.new_gen(players,dead_players,CURRENT_GENERATION)
+         pipes = [Pipe()]
+         players = DARWIN.new_gen(dead_players)
       for i,player in enumerate(players):
             if player.DEAD:
                dead_players.append(player)
@@ -43,7 +38,7 @@ def main():
       base.move()
       if(check_score(pipes,players,dead_players)):
          MVP_SCORE+=1
-         CURRENT_PIPE = pipes[MVP_SCORE]
+         CURRENT_PIPE = pipes[MVP_SCORE] # isso ta dando problema.
       draw_all(window,players,pipes,base,MVP_SCORE,CURRENT_GENERATION)
       pygame.display.update()
 
@@ -51,7 +46,7 @@ def main():
 
 
 def check_score(pipes,players,dead_players): # a cada cano que some da tela, um novo é gerado.
-   add_pipe = False
+   add_pipe = False # isso tbm ta dando merda. add_pipe = score
    remove_pipes = []
    for pipe in pipes:
       pipe.move()
