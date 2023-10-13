@@ -2,6 +2,7 @@ import pygame
 import os
 import random
 import Globals
+import math
 
 class Bird:
    TIME_ANIMATION = 30
@@ -19,36 +20,41 @@ class Bird:
       self.is_jumping = False
       self.sprite = self.SPRITES[0]
 
-      self.weights = []
+      #self.move()
+      #self.weights = []
       self.ia_score = 0
-      if not weights:
-         self.weights = [random.randint(-1000,1000),
-                        random.randint(-1000,1000),
-                        random.randint(-1000,1000),
-                        random.randint(-1000,1000)] 
-      else:
-         self.weights = weights
+      #if not weights:
+         #self.weights = [random.randint(-1000,1000),
+                            #random.randint(-1000,1000),
+                            #random.randint(-1000,1000),
+                            #random.randint(-1000,1000)]
+      self.weights = weights
       
    def vision(self, pipe): 
       deltax = pipe.x - self.x
-      deltay = (pipe.y + pipe.y_invert)/2 - self.y
+      deltay = (pipe.y_invert-pipe.DISTANCE/2) - self.y
+     # deltay = pipe.y_invert - self.y
+      #deltay2 = pipe.y_invert - self.y
       return (deltax, deltay)
 
    def brain(self, pipe):
       inputs = self.vision(pipe)
+      #print(inputs)
       outputs = [0, 0]
 
       outputs[0] = (inputs[0] * self.weights[0]) + (inputs[1] * self.weights[1])
       outputs[1] = (inputs[0] * self.weights[2]) + (inputs[1] * self.weights[3])
+      #print(outputs)
+      #outputs[0] = math.tanh(outputs[0])
+      #outputs[1] = math.tanh(outputs[1])
+      #print(outputs)
       if outputs[0] > outputs[1]: # alguma funcao qualquer que determine o output.
          self.jump()
-      else:
-         self.move()
       
-
    def jump(self):
       self.is_jumping = True
-      self.tick_fall = 2 # comecar ja com um valor pra parabola ser mais rapida
+      self.tick_fall = 2
+      self.move()# comecar ja com um valor pra parabola ser mais rapida
 
    def move(self):
       if self.is_jumping:
