@@ -12,7 +12,7 @@ class Evolution:
         print(f'geracao: {self.generation}')
         if not old_players:
             for i in range(100):
-                       new_players.append(Bird([random.randint(-1000,1000),
+                     new_players.append(Bird([random.randint(-1000,1000),
                                                random.randint(-1000,1000),
                                                random.randint(-1000,1000),
                                                random.randint(-1000,1000)]))
