@@ -19,21 +19,16 @@ class Evolution:
                     self.generation += 1
                     return new_players
         mvp = self.battle_royale(old_players)
-        if mvp.ia_score > 0: # caso haja um melhor, selecao natural!
-            print('selecao natural!')
+        #if mvp.ia_score > 0: # caso haja um melhor, selecao natural!
+        print('selecao natural!')
             #players.clear()
-            for i in range(100):
-                weights = self.mutate(mvp.weights)      
-                new_players.append(Bird(weights))
+        for i in range(100):
+    new_players.append(self.mutate(Bird(weights)))
             old_players.clear()
             return new_players
-        else:      # caso todos sejam podres, aniquilacao, cataclisma, eclipse, apocalipse
+        else:
             print('nao teve selecao')
-            #old_players.clear()
-            for i in range(100):
-                new_players.append(Bird(self.mutate(mvp.weights)))
-            old_players.clear()
-            return new_players
+        
 
     #quando achar o melhor, e passar pra frente, variar!
     def mutate(self,weights): # variacao genetica dos pesos, pegar e somar uma constante pequena!
