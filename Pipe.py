@@ -5,10 +5,10 @@ import Base
 import random
 
 class Pipe:
-   DISTANCE = Globals.SCREEN_HEIGHT//4 # entre canos!
+   DISTANCE = Globals.SCREEN_HEIGHT//6 # entre canos!
    SPEED = Globals.SCREEN_WIDTH//100 # velocidade legal p/ ia
    SPRITE = pygame.image.load(os.path.join('sprites', 'pipe.png'))
-   def __init__(self):
+   def __init__(self,speed):
       self.x = Globals.SCREEN_WIDTH# default 
       self.y = 0
       self.y_invert = 0
@@ -21,6 +21,9 @@ class Pipe:
       self.sprite_width = self.SPRITE.get_width()
       self.score = False # ainda nao foi feito ponto.
       self.rand_height() # gerador de alturas aleatorios.
+      self.speed = self.SPEED
+      if speed:
+         self.speed = speed
 
    def rand_height(self):
       self.height = random.randrange(Globals.GAME_HEIGHT//6, Globals.GAME_HEIGHT - Globals.GAME_HEIGHT//6)
@@ -29,7 +32,7 @@ class Pipe:
       
 
    def move(self):
-      self.x -= self.SPEED
+      self.x -= self.speed
 
    def draw(self,window):
       window.blit(self.sprite,(self.x,self.y))

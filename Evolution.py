@@ -9,7 +9,7 @@ class Evolution:
     def first_gen(self):
         players = []
         print(f'geracao: {self.generation}')
-        for i in range(10):
+        for i in range(30):
             weights = [random.randint(-1000,1000),random.randint(-1000,1000),random.randint(-1000,1000),random.randint(-1000,1000)]
             players.append(Bird(weights))
         return players
@@ -21,12 +21,12 @@ class Evolution:
         old_players.clear()
         print(f'geracao: {self.generation}')
         if mvp.ia_score > 0:
-            for i in range(10):
+            for i in range(30):
                 weights_mutate = self.mutate(mvp.weights)
                 new_players.append(Bird(weights_mutate))
         else:
             new_players.append(Bird(mvp.weights))
-            for i in range(9):
+            for i in range(29):
                 weights = [random.randint(-1000,1000),random.randint(-1000,1000),random.randint(-1000,1000),random.randint(-1000,1000)]
                 new_players.append(Bird(weights))
         return new_players
@@ -34,7 +34,7 @@ class Evolution:
     #quando achar o melhor, e passar pra frente, variar!
     def mutate(self,weights): # variacao genetica dos pesos, pegar e somar uma constante pequena!
         for i in range(4):
-            weight = random.randint(0,100) # peso do peso
+            weight = random.randint(500,1000) # peso do peso
             mutations = [weights[i] + weight, weights[i] - weight]
             weights[i] = random.choice(mutations)
         return weights

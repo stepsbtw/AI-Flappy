@@ -64,7 +64,7 @@ class Bird:
       if self.DEAD:
          return
       if self.is_jumping:
-         if self.tick_jump >= 5: # 5 frames de pulo
+         if self.tick_jump >= 4: # 3 frames de pulo
             self.is_jumping = False
          self.tick_jump += 1
          self.y -= (self.tick_jump**2)//(Globals.GAME_HEIGHT//160)
