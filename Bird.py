@@ -67,15 +67,11 @@ class Bird:
          if self.tick_jump >= 5: # 5 frames de pulo
             self.is_jumping = False
          self.tick_jump += 1
-         self.y -= (self.tick_jump**2)/(Globals.GAME_HEIGHT//160)
-         if self.y < Globals.SCREEN_HEIGHT - Globals.GAME_HEIGHT:
-            self.DEAD = True
+         self.y -= (self.tick_jump**2)//(Globals.GAME_HEIGHT//160)
       else:
          self.tick_jump = 0
          self.tick_fall +=2
-         self.y += (self.tick_fall**2)/2000
-         if self.y > Globals.GAME_HEIGHT - self.SPRITE_HEIGHT:
-            self.DEAD = True
+         self.y += (self.tick_fall**2)//2000
 
    def draw(self, window):
       if self.DEAD:

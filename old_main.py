@@ -20,9 +20,9 @@ def main():
    DARWIN = Evolution()
    players = DARWIN.first_gen()
    MVP_CURRENT_GEN_SCORE = 0
-   CURRENT_PIPE = 0
 
    while is_running:
+
       clock.tick(60)
       window.fill((255, 255, 255))
       CURRENT_GENERATION = DARWIN.generation
@@ -31,64 +31,55 @@ def main():
          if event.type == pygame.QUIT:
             is_running = False
 
-      CURRENT_PIPE = 0
-      if players:
-         if pipes and players[0].x > (pipes[0].x + pipes[0].sprite_width):
-            CURRENT_PIPE = 1
-      else:
-         players = DARWIN.new_gen(dead_players)
+      if not players: # quando todos morrem, passar pra prox geracao.
          MVP_CURRENT_GEN_SCORE = 0
          pipes = [Pipe()]
-         continue
+         players = DARWIN.new_gen(dead_players)
 
-      for player in players:
-         player.move()
-         player.brain(pipes[CURRENT_PIPE])
       base.move()
-      MVP_CURRENT_GEN_SCORE = check(pipes,players,dead_players,MVP_CURRENT_GEN_SCORE)
-         
-      #if not players: # quando todos morrem, passar pra prox geracao.
-         #MVP_CURRENT_GEN_SCORE = 0
-         #pipes = [Pipe()]
-         #players = DARWIN.new_gen(dead_players)
-         
-      for player in players:
-         if player.y < Globals.SCREEN_HEIGHT - Globals.GAME_HEIGHT:
-            dead_players.append(player)
-            players.remove(player)
-         if player.y > Globals.GAME_HEIGHT - player.SPRITE_HEIGHT:
-            dead_players.append(player)
-            players.remove(player)
+
+      plus = check(pipes,players,dead_players)
+      if plus:
+         MVP_CURRENT_GEN_SCORE+=1
 
       draw_all(window,players,pipes,base,MVP_CURRENT_GEN_SCORE,CURRENT_GENERATION)
       pygame.display.update()
 
    pygame.quit()
-   quit()
 
 # ta faltando um pipe.pop
-def check(pipes,players,dead_players,MVP_CURRENT_GEN_SCORE): # a cada cano que some da tela, um novo é gerado.
+def check(pipes,players,dead_players): # a cada cano que some da tela, um novo é gerado.
    add_pipe = False # isso tbm ta dando merda. add_pipe = score
    remove_pipes = []
    for pipe in pipes:
+      pipe.move()
       for player in players:
-         if pipe.collision(player):
-            dead_players.append(player)
-            players.remove(player)
-         if not pipe.score and player.x > pipe.x: # caso ainda nao tenha sido feito ponto e o jogador passou, ponto!
+         player.move()
+         player.brain(pipe)
+         if not pipe.score:
+               #if player.x < pipe.x:
+                  #player.ia_score += ((pipe.y_invert-pipe.DISTANCE/2)- player.y)//100
+                  #print(player.x, pipe.x,pipe.y_invert,pipe.DISTANCE) # to dando ponto pro quao perto ele chega
+               if player.x > pipe.x: # caso ainda nao tenha sido feito ponto e o jogador passou, ponto!
                   pipe.score = True
                   add_pipe = True # se foi ponto, adicionar um cano
                   #player.ia_score *= 2
-      pipe.move()
+                  player.ia_score += 1
+         if player.DEAD:
+            dead_players.append(player) # adiciona-lo na lista de mortos.
+            players.remove(player) 
+         if pipe.collision(player):
+            player.DEAD = True
+            dead_players.append(player)
+            players.remove(player)
       if pipe.x + pipe.sprite_width < 0: # se o pipe saiu, entra na fila de remocao.
          remove_pipes.append(pipe)
    if add_pipe:
-      player.ia_score += 1
-      MVP_CURRENT_GEN_SCORE += 1
-      pipes.append(Pipe()) # apenas adicionar o novo cano fora do loop.
+      pipes.append(Pipe()) 
+   # apenas adicionar o novo cano fora do loop.
    for pipe in remove_pipes: # remover os que ja sairam da tela.
-      pipes.remove(pipe)
-   return MVP_CURRENT_GEN_SCORE # se adicionei um pipe, prox pipe.
+      remove_pipes.remove(pipe)
+   return add_pipe # se adicionei um pipe, prox pipe.
       
 def draw_all(window,players,pipes,base,mvp_score,generation):
    window.blit(Globals.SPRITE_BG,(0,0))

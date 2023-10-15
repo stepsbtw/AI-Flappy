@@ -6,7 +6,7 @@ import random
 
 class Pipe:
    DISTANCE = Globals.SCREEN_HEIGHT//4 # entre canos!
-   SPEED = Globals.SCREEN_WIDTH/100 # velocidade legal p/ ia
+   SPEED = Globals.SCREEN_WIDTH//100 # velocidade legal p/ ia
    SPRITE = pygame.image.load(os.path.join('sprites', 'pipe.png'))
    def __init__(self):
       self.x = Globals.SCREEN_WIDTH# default 
@@ -14,6 +14,8 @@ class Pipe:
       self.y_invert = 0
       self.height = 0
       self.sprite_invert = self.SPRITE
+      self.sprite_invert_height = self.SPRITE.get_height
+      self.sprite_invert_width = self.SPRITE.get_width()
       self.sprite = pygame.transform.flip(self.sprite_invert,False,True)
       self.sprite_height = self.SPRITE.get_height()
       self.sprite_width = self.SPRITE.get_width()

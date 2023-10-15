@@ -9,7 +9,7 @@ class Evolution:
     def first_gen(self):
         players = []
         print(f'geracao: {self.generation}')
-        for i in range(100):
+        for i in range(10):
             weights = [random.randint(-1000,1000),random.randint(-1000,1000),random.randint(-1000,1000),random.randint(-1000,1000)]
             players.append(Bird(weights))
         return players
@@ -21,12 +21,12 @@ class Evolution:
         old_players.clear()
         print(f'geracao: {self.generation}')
         if mvp.ia_score > 0:
-            for i in range(100):
+            for i in range(10):
                 weights_mutate = self.mutate(mvp.weights)
                 new_players.append(Bird(weights_mutate))
         else:
             new_players.append(Bird(mvp.weights))
-            for i in range(99):
+            for i in range(9):
                 weights = [random.randint(-1000,1000),random.randint(-1000,1000),random.randint(-1000,1000),random.randint(-1000,1000)]
                 new_players.append(Bird(weights))
         return new_players
@@ -47,4 +47,5 @@ class Evolution:
                 mvp = player
                 mvp_score = player.ia_score
         print(f'record : {mvp_score}')
+        print(mvp.weights)
         return mvp
