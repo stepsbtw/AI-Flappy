@@ -54,20 +54,20 @@ def check(pipes,players,dead_players): # a cada cano que some da tela, um novo Ã
    for pipe in pipes:
       pipe.move()
       for player in players:
+         player.move()
+         player.brain(pipe)
          if not pipe.score:
-               if player.x < pipe.x:
-                  player.ia_score += ((pipe.y_invert-pipe.DISTANCE/2)- player.y)//100
+               #if player.x < pipe.x:
+                  #player.ia_score += ((pipe.y_invert-pipe.DISTANCE/2)- player.y)//100
                   #print(player.x, pipe.x,pipe.y_invert,pipe.DISTANCE) # to dando ponto pro quao perto ele chega
                if player.x > pipe.x: # caso ainda nao tenha sido feito ponto e o jogador passou, ponto!
                   pipe.score = True
                   add_pipe = True # se foi ponto, adicionar um cano
-                  player.ia_score *= 2
-                  #player.ia_score += 1
+                  #player.ia_score *= 2
+                  player.ia_score += 1
          if player.DEAD:
             dead_players.append(player) # adiciona-lo na lista de mortos.
-            players.remove(player)
-         player.move()
-         player.brain(pipe) # pega o index e o elemento referido
+            players.remove(player) 
          if pipe.collision(player):
             player.DEAD = True
             dead_players.append(player)

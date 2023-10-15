@@ -18,18 +18,24 @@ class Evolution:
         new_players = []
         self.generation += 1
         mvp = self.battle_royale(old_players)
-        print(f'geracao: {self.generation}')
-        for i in range(100):
-            weights_mutate = self.mutate(mvp.weights)
-            new_players.append(Bird(weights_mutate))
         old_players.clear()
+        print(f'geracao: {self.generation}')
+        if mvp.ia_score > 0:
+            for i in range(100):
+                weights_mutate = self.mutate(mvp.weights)
+                new_players.append(Bird(weights_mutate))
+        else:
+            new_players.append(Bird(mvp.weights))
+            for i in range(99):
+                weights = [random.randint(-1000,1000),random.randint(-1000,1000),random.randint(-1000,1000),random.randint(-1000,1000)]
+                new_players.append(Bird(weights))
         return new_players
 
     #quando achar o melhor, e passar pra frente, variar!
     def mutate(self,weights): # variacao genetica dos pesos, pegar e somar uma constante pequena!
         for i in range(4):
             weight = random.randint(0,100) # peso do peso
-            mutations = (weights[i] + weight, weights[i] - weight)
+            mutations = [weights[i] + weight, weights[i] - weight]
             weights[i] = random.choice(mutations)
         return weights
 

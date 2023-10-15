@@ -6,7 +6,7 @@ import random
 
 class Pipe:
    DISTANCE = Globals.SCREEN_HEIGHT//4 # entre canos!
-   SPEED = Globals.SCREEN_WIDTH//100 # velocidade legal p/ ia
+   SPEED = Globals.SCREEN_WIDTH/100 # velocidade legal p/ ia
    SPRITE = pygame.image.load(os.path.join('sprites', 'pipe.png'))
    def __init__(self):
       self.x = Globals.SCREEN_WIDTH# default 
