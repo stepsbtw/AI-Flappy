@@ -9,7 +9,7 @@ class Base:
     WIDTH = SPRITE.get_width()
     HEIGHT = SPRITE.get_height()
 
-    def __init__(self,y):
+    def __init__(self):
         self.y = Globals.SCREEN_HEIGHT - Base.HEIGHT
         self.x = 0
         self.x2 = self.WIDTH
